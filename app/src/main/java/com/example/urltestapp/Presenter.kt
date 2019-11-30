@@ -16,14 +16,17 @@ class Presenter @Inject constructor(val viewData: ViewData) {
         viewData.defaultState()
     }
 
-    fun handleDataResponse(responsObservable: Observable<FetchUrlDataInteractor.RESULT>): Disposable? {
-        return responsObservable.observeOn(AndroidSchedulers.mainThread()).subscribe { response ->
-            when (response) {
-                FetchUrlDataInteractor.RESULT.SUCCESS -> viewData.showSuccess()
-                FetchUrlDataInteractor.RESULT.FAILURE -> viewData.showNetworkFailure()
-                FetchUrlDataInteractor.RESULT.NO_NETWORK -> viewData.showConnectionError()
-            }
+    fun subscribeDataResponse(responsObservable: Observable<FetchUrlDataInteractor.RESULT>): Disposable {
+        return responsObservable
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { response -> handleDataResponse(response)}
+    }
 
+    private fun handleDataResponse(result: FetchUrlDataInteractor.RESULT) {
+        when (result) {
+            FetchUrlDataInteractor.RESULT.SUCCESS -> viewData.showSuccess()
+            FetchUrlDataInteractor.RESULT.FAILURE -> viewData.showNetworkFailure()
+            FetchUrlDataInteractor.RESULT.NO_NETWORK -> viewData.showConnectionError()
         }
     }
 
