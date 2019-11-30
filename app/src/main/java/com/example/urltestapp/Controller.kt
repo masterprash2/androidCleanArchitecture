@@ -14,7 +14,7 @@ class Controller @Inject constructor(
         presenter.resetToDefault();
     }
 
-    fun bindFetchUrlActionTo(binding: Observable<Unit>) : Disposable {
+    fun bindFetchUrlActionTo(binding: Observable<Unit>): Disposable {
         val response = binding.switchMap {
             presenter.showLoading()
             fetchUrlDataInteractor.execute(requestParasm)
@@ -22,12 +22,13 @@ class Controller @Inject constructor(
         return presenter.subscribeDataResponse(response)
     }
 
+    fun bindResetActionTo(binding: Observable<Unit>): Disposable {
+        return binding.subscribe { presenter.resetToDefault() }
+    }
+
     fun getViewData(): ViewData {
         return presenter.viewData
     }
 
-    fun bindResetButton(binding: Observable<Unit>) : Disposable {
-        return binding.subscribe { presenter.resetToDefault()  }
-    }
 
 }

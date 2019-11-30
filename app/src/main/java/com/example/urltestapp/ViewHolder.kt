@@ -11,8 +11,6 @@ import java.util.concurrent.TimeUnit
 class ViewHolder(context: Context) {
 
     private val viewBinding: ActivityMainBinding
-    private var viewData: ViewData? = null
-    private var controller: Controller? = null
     private var disposables = CompositeDisposable()
 
     init {
@@ -23,32 +21,32 @@ class ViewHolder(context: Context) {
         return viewBinding.root
     }
 
-    fun bind(viewData: ViewData, controller: Controller) {
-        this.viewData = viewData
-        this.controller = controller
+    fun bind(controller: Controller) {
         viewBinding.viewHolder = this
-        viewBinding.data = viewData
+        viewBinding.data = controller.getViewData()
 
+        bindFetchButton(controller)
+        bindResetButton(controller)
+    }
+
+    private fun bindFetchButton(controller: Controller) {
         disposables.add(
             controller.bindFetchUrlActionTo(
                 viewBinding.fetchButton.clicks().debounce(100, TimeUnit.MILLISECONDS)
             )
         )
+    }
 
+    private fun bindResetButton(controller: Controller) {
         disposables.add(
-            controller.bindResetButton(
-                viewBinding.resetButton.clicks().debounce(
-                    100,
-                    TimeUnit.MILLISECONDS
-                )
+            controller.bindResetActionTo(
+                viewBinding.resetButton.clicks().debounce(100, TimeUnit.MILLISECONDS)
             )
         )
     }
 
 
     fun unbind() {
-        controller = null;
-        viewData = null
         viewBinding.data = null;
         disposables.dispose()
         disposables = CompositeDisposable()
