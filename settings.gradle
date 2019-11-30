@@ -1,2 +1,1 @@
-include ':app'
-rootProject.name='UrlTestApp'
+include ':app', ':entity', ':viewData', ':interactor', ':controller', ':gateway', ':gatewayimpl'

@@ -1,6 +1,11 @@
 package com.example.urltestapp.di
 
 import android.content.Context
+import com.example.gateway.ConnectionGateway
+import com.example.gateway.NetworkGateway
+import com.example.gateway.scopes.AppScope
+import com.example.gatewayimpl.DummyConnectionGateway
+import com.example.gatewayimpl.UrlConnectionNetworkGateway
 import com.example.urltestapp.*
 import dagger.Module
 import dagger.Provides

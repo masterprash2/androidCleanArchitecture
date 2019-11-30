@@ -1,6 +1,9 @@
 package com.example.urltestapp
 
 import android.os.Bundle
+import com.example.controller.ControlleFactory
+import com.example.controller.Controller
+import com.example.entity.UrlRequest
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 

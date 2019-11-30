@@ -1,11 +1,11 @@
 package com.example.urltestapp.di
 
+import com.example.gateway.scopes.AppScope
 import com.example.urltestapp.App
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
-import javax.inject.Singleton
 
 @AppScope
 @Component(
