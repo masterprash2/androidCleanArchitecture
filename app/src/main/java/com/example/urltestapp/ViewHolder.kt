@@ -13,12 +13,8 @@ import java.util.concurrent.TimeUnit
 
 class ViewHolder(context: Context) {
 
-    private val viewBinding: ActivityMainBinding
+    private val viewBinding = ActivityMainBinding.inflate(LayoutInflater.from(context))
     private var disposables = CompositeDisposable()
-
-    init {
-        viewBinding = ActivityMainBinding.inflate(LayoutInflater.from(context))
-    }
 
     fun rootView(): View {
         return viewBinding.root
@@ -54,7 +50,6 @@ class ViewHolder(context: Context) {
         disposables.dispose()
         disposables = CompositeDisposable()
     }
-
 
 }
 
