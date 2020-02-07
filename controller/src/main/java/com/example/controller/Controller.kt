@@ -19,10 +19,10 @@ class Controller @Inject constructor(
     }
 
     fun bindFetchUrlActionTo(binding: Observable<Unit>): Disposable {
-        return binding.switchMap {
-            presenter.showLoading()
-            fetchUrlDataInteractor.execute(requestParasm)
-        }.subscribeToResponse(presenter)
+        return binding
+            .doOnNext { presenter.showLoading() }
+            .switchMap { fetchUrlDataInteractor.execute(requestParasm) }
+            .subscribeToResponse(presenter)
     }
 
     fun bindResetActionTo(binding: Observable<Unit>): Disposable {
