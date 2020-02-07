@@ -1,5 +1,6 @@
 package com.example.controller
 
+import com.example.entity.RESULT
 import com.example.interactor.FetchUrlDataInteractor
 import com.example.viewdata.Presenter
 import com.example.viewdata.ViewData
@@ -18,11 +19,10 @@ class Controller @Inject constructor(
     }
 
     fun bindFetchUrlActionTo(binding: Observable<Unit>): Disposable {
-        val response = binding.switchMap {
+        return binding.switchMap {
             presenter.showLoading()
             fetchUrlDataInteractor.execute(requestParasm)
-        }
-        return presenter.subscribeDataResponse(response)
+        }.subscribeToResponse(presenter)
     }
 
     fun bindResetActionTo(binding: Observable<Unit>): Disposable {
@@ -34,4 +34,8 @@ class Controller @Inject constructor(
     }
 
 
+}
+
+private fun Observable<RESULT>.subscribeToResponse(presenter: Presenter): Disposable {
+    return presenter.subscribeDataResponse(this)
 }
