@@ -6,7 +6,9 @@ import android.view.View
 import com.example.controller.Controller
 import com.example.urltestapp.databinding.ActivityMainBinding
 import com.jakewharton.rxbinding3.view.clicks
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class ViewHolder(context: Context) {
@@ -31,19 +33,19 @@ class ViewHolder(context: Context) {
     }
 
     private fun bindFetchButton(controller: Controller) {
-        disposables.add(
-            controller.bindFetchUrlActionTo(
-                viewBinding.fetchButton.clicks().debounce(100, TimeUnit.MILLISECONDS)
-            )
-        )
+        viewBinding.fetchButton
+            .clicks()
+            .debounce(100, TimeUnit.MILLISECONDS)
+            .fetchUrlAction(controller)
+            .disposeBy(disposables)
     }
 
     private fun bindResetButton(controller: Controller) {
-        disposables.add(
-            controller.bindResetActionTo(
-                viewBinding.resetButton.clicks().debounce(100, TimeUnit.MILLISECONDS)
-            )
-        )
+        viewBinding.resetButton
+            .clicks()
+            .debounce(100, TimeUnit.MILLISECONDS)
+            .resetAction(controller)
+            .disposeBy(disposables)
     }
 
 
@@ -54,4 +56,16 @@ class ViewHolder(context: Context) {
     }
 
 
+}
+
+private fun Observable<Unit>.fetchUrlAction(controller: Controller): Disposable {
+    return controller.bindFetchUrlActionTo(this)
+}
+
+private fun Observable<Unit>.resetAction(controller: Controller): Disposable {
+    return controller.bindResetActionTo(this)
+}
+
+private fun Disposable.disposeBy(disposables: CompositeDisposable) {
+    disposables.add(this)
 }
